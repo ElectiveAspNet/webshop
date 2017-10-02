@@ -7,40 +7,42 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Webshop.Models;
 using Webshop.Models.Entities;
+using Webshop.Models.Repositories.Interfaces;
 
 namespace Webshop.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly MyDbContext _context;
+        private MyDbContext _context;
+        private IProductRepository _productRepository;
 
-        public ProductsController(MyDbContext context)
+        public ProductsController(IProductRepository productRepository) // MyDbContext context
         {
-            _context = context;
+            _productRepository = productRepository;
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Product.ToListAsync());
+            return View(_productRepository.ReadAll()); // _context.Product.ToListAsync()
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var product = await _context.Product
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            //var product = await _context.Product
+            //    .SingleOrDefaultAsync(m => m.Id == id);
+            //if (product == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return View(product);
+            return View();
         }
 
         // GET: Products/Create
@@ -54,14 +56,14 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Product product)
+        public IActionResult Create([Bind("Id,Name,Price")] Product product)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(product);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
             return View(product);
         }
 
@@ -73,12 +75,12 @@ namespace Webshop.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
+            ////var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            //if (product == null)
+            //{
+            //    return NotFound();
+            //}
+            return View();
         }
 
         // POST: Products/Edit/5

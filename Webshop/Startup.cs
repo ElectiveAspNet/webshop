@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Webshop.Models;
+using Webshop.Models.Repositories.Interfaces;
+using Webshop.Models.Repositories;
 
 namespace Webshop
 {
@@ -27,6 +29,8 @@ namespace Webshop
 
             services.AddDbContext<MyDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MyDbContext")));
+ 
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,3 +57,4 @@ namespace Webshop
         }
     }
 }
+ 
